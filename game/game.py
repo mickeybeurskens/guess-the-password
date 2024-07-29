@@ -65,7 +65,7 @@ class PTBGame:
 
     def display_welcome_message(self, level: int):
         message = (
-            f"Welcome to level {str(level)} of Pester The Bridge!\n"
+            f"Welcome to level {str(level)} of Guess The Password!\n"
             "Your goal is to get Quazar the AI to share its secret password.\n"
             f"There are {len(self.levels)} levels, starting at 0. The difficulty goes up at every level. Good luck!\n"
             "Type '/password' to take a guess at the password, and '/help' for additional instructions.\n"
