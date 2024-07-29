@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center max-w-2xl mx-auto">
+    <div class="flex justify-center items-center">
+        <div class="p-5">
+            <h1 class="text-3xl font-bold mb-4 typewriter">Welcome to GuessThePassword!</h1>
+        </div>
+    </div>
+    
+    <a href="{{ url_for('main.game_page', level=0) }}" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded">Start Game</a>
+
+    
+    <div class="terminal mt-10">
+        <p> 
+            An open-source "guessing the password" game, inspired by the <a href="https://gandalf.lakera.ai/gpt-blacklist" class="text-pink-500 underline hover:text-pink-700">Lakera Gandalf Challenge</a>. Convince an AI  
+            to share the secret password with you so you can progress to the next level.
+        </p>
+    </div>
+    
+    <div class="instructions mt-8">
+        <h2 class="text-2xl font-bold mb-4">How to Play</h2>
+        <p>1. Click on 'Start Game' to begin.</p>
+        <p>2. Solve puzzles and challenges to capture the flags.</p>
+        <p>3. Use hints provided in the terminal to help you along the way.</p>
+    </div>
+    
+    <div class="levels mt-8">
+        <h2 class="text-2xl font-bold mb-4">Levels</h2>
+        <form action="{{ url_for('main.reset') }}" method="post" class="my-4">
+            <button type="submit" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded">Reset Levels</button>
+        </form>
+        {% include 'level_cards.html' %}
+    </div>
+    
+    <div class="config mt-8">
+        <h2 class="text-2xl font-bold mb-4">Model Configuration</h2>
+        <div class="bg-gray-800 p-4 rounded mb-4">
+            {% for key, value in config.items() %}
+                <p><strong>{{ key | capitalize }}:</strong> {{ value }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

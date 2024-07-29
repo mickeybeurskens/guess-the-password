@@ -1,0 +1,9 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    {% for i in range(level_count) %}
+        <a href="{{ url_for('main.game_page', level=i) }}" class="bg-gray-800 hover:bg-gray-700 text-white p-4 rounded shadow-md">
+            <div class="text-xl font-bold">Level {{ i }}</div>
+            <div class="text-pink-500 text-sm">{{ level_names[i] }}</div>
+            <div class="text-xs mt-2 text-gray-400">{{ hints[i] }}</div>
+        </a>
+    {% endfor %}
+</div>

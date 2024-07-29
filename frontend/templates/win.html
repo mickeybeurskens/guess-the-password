@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex justify-center items-center h-screen">
+    <div class="text-center bg-gray-900 p-10 rounded-lg shadow-lg border border-gray-700">
+        <pre id="kirby-frame" class="text-pink-400 text-2xl mb-4 pb-4" style="font-family: 'Courier New', Courier, monospace;">
+            (>'-')> <('-'<)
+        </pre>
+        <h1 class="text-4xl font-bold mb-4 text-pink-400 typewriter" style="font-family: 'Courier New', Courier, monospace;">Congratulations On Completing Guess The Password!</h1>
+        <p class="text-gray-400" style="font-family: 'Courier New', Courier, monospace;">You have completed every single level! Well done!</p>
+        <div class="my-10">
+            <button id="more-confetti" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded text-lg">Celebrate Victory</button>
+        </div>
+        <div>
+            <a href="{{ url_for('main.index') }}" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded transition duration-300 ease-in-out transform hover:scale-105">Home</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .typewriter {
+        display: inline-block;
+        overflow: hidden;
+        border-right: .15em solid orange;
+        white-space: nowrap;
+        animation: typing 3.5s steps(30, end), blink-caret .75s step-end infinite;
+    }
+    @keyframes typing {
+        from { width: 0; }
+        to { width: 100%; }
+    }
+    @keyframes blink-caret {
+        from, to { border-color: transparent; }
+        50% { border-color: rgb(219, 39, 119); }
+    }
+</style>
+
+<script>
+    var frames = [
+        `(>'-')>`,
+        `<('-'<)`,
+        `^('-')^`,
+        `v('-')v`,
+        `<( '-' )>`,
+        `( '-' )`,
+        `<( '-' )>`,
+        `v('-')v`,
+        `^('-')^`,
+        `<('-'<)`,
+        `(>'-')>`
+    ];
+
+    var currentFrame = 0;
+
+    function switchFrame() {
+        var kirbyFrame = document.getElementById("kirby-frame");
+        kirbyFrame.innerText = frames[currentFrame];
+        currentFrame = (currentFrame + 1) % frames.length;
+    }
+
+    setInterval(switchFrame, 300); // Switch frames every 300ms
+</script>
+{% endblock %}

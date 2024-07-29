@@ -1,0 +1,38 @@
+services:
+  game:
+    depends_on:
+      - ollama
+    build:
+      context: ../../
+      dockerfile: ./docker/game/Dockerfile
+    container_name: game-dev
+    working_dir: /app
+    environment:
+      - PERRY_DEPLOYMENT_MODE=development
+    volumes:
+      - ../..:/app
+    ports:
+      - "5000:5000"
+    networks:
+      - ollama-docker
+    command: python cli.py runserver --debug
+    
+  ollama:
+    volumes:
+      - ../../.ollama-data/ollama:/root/.ollama
+      - ../ollama/entrypoint.sh:/root/entrypoint.sh
+    image: ollama/ollama:latest
+    pull_policy: always
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 11434:11434
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+    networks:
+      - ollama-docker
+    entrypoint: ["/usr/bin/bash", "/root/entrypoint.sh"]
+
+networks:
+  ollama-docker:
+    external: false

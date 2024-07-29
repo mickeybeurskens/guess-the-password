@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "passthebridge"
+version = "0.1.0"
+description = "Guardrailing demo for large language models"
+authors = ["Mickey Beurskens <mickeybeurskens@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.8.2"
+requests = "^2.32.3"
+click = "^8.1.7"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+black = "^24.4.2"
+isort = "^5.13.2"
+
+[tool.poetry.group.webapp.dependencies]
+gunicorn = "^22.0.0"
+flask = "^3.0.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

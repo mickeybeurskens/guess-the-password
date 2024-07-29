@@ -1,0 +1,6 @@
+{
+  "host": "http://ollama",
+  "port": 11434,
+  "subdomain": "/api",
+  "model": "llama3.1:8b"
+}

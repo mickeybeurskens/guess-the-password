@@ -1,0 +1,12 @@
+<div class="bg-gray-800 p-4 rounded mb-4">
+    <h2 class="text-xl font-bold mb-4 text-center">Levels</h2>
+    <ul>
+        {% for i in range(level_count) %}
+            {% if i > level %}
+                <li class="text-gray-500 text-sm">Level {{ i }} - {{ level_names[i] }}</li>
+            {% else %}
+                <li>Level {{ i }} - {{ level_names[i] }} </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

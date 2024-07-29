@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess The Password</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ url_for('static', filename='js/confetti.browser.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/confetti.js') }}"></script>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='key-icon.svg') }}">
+    <style>
+        body {
+            background-color: #1a202c;
+            color: #cbd5e0;
+        }
+        .typewriter {
+        display: inline-block;
+        overflow: hidden;
+        border-right: .15em solid rgb(219, 39, 119);
+        white-space: nowrap;
+        animation: typing 2.5s steps(30, end), blink-caret .75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: rgb(219, 39, 119); }
+        }
+        .terminal {
+            background: #2d3748;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            color: #a0aec0;
+        }
+        .navbar {
+            background-color: #2d3748;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #4a5568;
+        }
+        .navbar-logo {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5em;
+            color: #f7fafc;
+        }
+        .navbar-text {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1em;
+            color: #f7fafc;
+        }
+        .navbar-text a {
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+    {% include 'header.html' %}
+    <div class="container mx-auto p-4">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

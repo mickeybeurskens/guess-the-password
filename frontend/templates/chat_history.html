@@ -1,0 +1,14 @@
+<div id="chat-history" class="chat-history bg-gray-800 p-4 rounded mb-4" style="height: 500px; overflow-y: auto;">
+    {% for message in chat_history %}
+    {% set is_recent = loop.index > (chat_history|length - context_length) %}
+    {% if loop.index is odd %}
+        <div class="bg-gray-700 p-2 rounded mb-2 text-left {% if not is_recent %}text-gray-500{% endif %}">
+            <p class="{% if not is_recent %}text-gray-500{% else %}text-blue-400{% endif %}"><strong>You:</strong> {{ message }}</p>
+        </div>
+    {% else %}
+        <div class="bg-gray-600 p-2 rounded mb-2 text-left {% if not is_recent %}text-gray-400{% endif %}">
+            <p class="{% if not is_recent %}text-gray-400{% else %}text-green-400{% endif %}"><strong>AI:</strong> {{ message }}</p>
+        </div>
+    {% endif %}
+    {% endfor %}
+</div>
