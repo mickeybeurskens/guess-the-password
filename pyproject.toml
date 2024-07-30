@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "passthebridge"
+name = "guessthepassword"
 version = "0.1.0"
 description = "Guardrailing demo for large language models"
 authors = ["Mickey Beurskens <mickeybeurskens@gmail.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
