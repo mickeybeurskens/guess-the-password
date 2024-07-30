@@ -16,7 +16,7 @@ It is possible to run the game with different models through [ollama](https://gi
 
 ### Quickstart
 
-The game can be played by running an [ollama server](https://github.com/ollama/ollama) that runs a language model of you choice. You can then connect the web application with the ollama server of your choice. Run the entire stack locally through docker with llama3.1:8b:
+The game can be played by running an [ollama server](https://github.com/ollama/ollama) that runs a language model of your choice. You can then connect the web application with the ollama server. Run the entire stack locally through docker with llama3.1:8b:
 
 ```sh
 docker compose -f docker/docker-compose-gpu.yaml up
