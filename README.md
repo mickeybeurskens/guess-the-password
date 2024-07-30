@@ -14,9 +14,19 @@ It is possible to run the game with different models through [ollama](https://gi
 
 ## Playing The Game
 
-The game can be played by connection to an [ollama server](https://github.com/ollama/ollama) that runs a language model of you choice. This allows users to try out many different models for both guarding and prompting.
+### Quickstart
 
-The game itself can be played through the command line or through the web application, which are both accesible through `cli.py`. Run `python cli.py --help` for details. 
+The game can be played by running an [ollama server](https://github.com/ollama/ollama) that runs a language model of you choice. You can then connect the web application with the ollama server of your choice. Run the entire stack locally through docker with llama3.1:8b:
+
+```sh
+docker compose -f docker/docker-compose-gpu.yaml up
+```
+
+If you run a ollama server elsewhere, configure the connection settings in './config/ollama.json' and run the webapplication through the cli:
+
+```sh
+python cli.py runserver
+```
 
 ### Choosing A Model
 
