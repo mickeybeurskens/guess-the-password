@@ -78,3 +78,121 @@ class OllamaInterface(ModelInterface):
                 break
         logging.info(f"Response: {full_response}")
         return full_response
+
+
+class ChatGPTInterfaceConfig(BaseModel):
+    api_key: str
+    model: str = "gpt-4"
+    organization: str = None  # Optional: specify if using multiple organizations
+    project: str = None  # Optional: specify if using project-scoped keys
+
+
+class ChatGPTInterface(ModelInterface):
+    def __init__(self, config: ChatGPTInterfaceConfig):
+        self.config = config
+        self._url = "https://api.openai.com/v1/chat/completions"
+
+    def query(self, query: str) -> str:
+        """Query ChatGPT model and get a response."""
+        logging.info(f"Query: {query}")
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.config.api_key}",
+        }
+
+        # Optionally include organization and project headers
+        if self.config.organization:
+            headers["OpenAI-Organization"] = self.config.organization
+        if self.config.project:
+            headers["OpenAI-Project"] = self.config.project
+
+        payload = {
+            "model": self.config.model,
+            "messages": [{"role": "user", "content": query}],
+            "temperature": 0.7,  # Optionally customize other parameters
+        }
+
+        response = requests.post(self._url, headers=headers, json=payload)
+
+        if response.status_code == 401:
+            raise Exception(
+                "Authentication failed: Invalid API key or other authentication error."
+            )
+        elif response.status_code != 200:
+            raise Exception(
+                f"Request failed with status code {response.status_code}: {response.text}"
+            )
+
+        return self._parse_response(response)
+
+    def get_info(self) -> dict:
+        return self.config.model_dump()
+
+    def _parse_response(self, response) -> str:
+        response_json = response.json()
+        full_response = response_json["choices"][0]["message"]["content"]
+        logging.info(f"Response: {full_response}")
+        return full_response
+
+
+class ClaudeInterfaceConfig(BaseModel):
+    api_key: str
+    model: str = "claude-3-5-sonnet-20240620"
+    version: str = "2023-06-01"
+
+
+class ClaudeInterface(ModelInterface):
+    def __init__(self, config: ClaudeInterfaceConfig):
+        self.config = config
+        self._url = "https://api.anthropic.com/v1/messages"
+
+    def query(self, query: str) -> str:
+        """Query Claude model and get a response."""
+        logging.info(f"Query: {query}")
+
+        headers = {
+            "Content-Type": "application/json",
+            "x-api-key": self.config.api_key,
+            "anthropic-version": self.config.version,
+        }
+
+        messages = [{"role": "user", "content": query}]
+
+        payload = {
+            "model": self.config.model,
+            "messages": messages,
+            "max_tokens": 2000,
+        }
+
+        response = requests.post(self._url, headers=headers, json=payload)
+
+        if response.status_code != 200:
+            raise Exception(
+                f"Request failed with status code {response.status_code}: {response.text}"
+            )
+
+        return self._parse_response(response)
+
+    def get_info(self) -> dict:
+        return self.config.model_dump()
+
+    def _parse_response(self, response) -> str:
+        response_json = response.json()
+
+        if "content" not in response_json:
+            logging.error(
+                f"Expected 'content' key not found in response: {response_json}"
+            )
+            raise Exception("Invalid API response format")
+
+        full_response = "".join(
+            [
+                block["text"]
+                for block in response_json["content"]
+                if block["type"] == "text"
+            ]
+        )
+
+        logging.info(f"Response: {full_response}")
+        return full_response

@@ -8,7 +8,10 @@ from game.levels.censor import LevelCensor
 from game.levels.extended_prompt import LevelExtendedPrompt
 from game.levels.no_guard import LevelNoGuard
 from game.levels.simple_prompt import LevelSimplePrompt
-from game.models import ModelInterface, OllamaInterface, OllamaInterfaceConfig
+from game.models import (ChatGPTInterface, ChatGPTInterfaceConfig,
+                         ClaudeInterface, ClaudeInterfaceConfig,
+                         ModelInterface, OllamaInterface,
+                         OllamaInterfaceConfig)
 
 CONVERSATION_HISTORY_LENGTH = 6
 CONVERSATION_BUFFER_LENGTH = CONVERSATION_HISTORY_LENGTH * 5
@@ -137,9 +140,8 @@ class PTBGame:
         )
 
 
-def load_game() -> PTBGame:
-    config_path = Path(__file__).parent.parent / "config" / "ollama.json"
-
+def load_game(model_type: str = "ollama") -> PTBGame:
+    config_dir = Path(__file__).parent.parent / "config"
     levels = [
         LevelNoGuard("UPINTHECLAUDES"),
         LevelSimplePrompt("THEFLOORISLLAMA"),
@@ -147,8 +149,22 @@ def load_game() -> PTBGame:
         LevelExtendedPrompt("GROCKTOPUS"),
     ]
 
-    config = OllamaInterfaceConfig(
-        **json.loads(config_path.read_text(encoding="UTF-8"))
-    )
-    model = OllamaInterface(config)
+    config_mapping = {
+        "ollama": ("ollama.json", OllamaInterfaceConfig, OllamaInterface),
+        "chatgpt": ("chatgpt.json", ChatGPTInterfaceConfig, ChatGPTInterface),
+        "claude": ("claude.json", ClaudeInterfaceConfig, ClaudeInterface),
+    }
+
+    try:
+        config_file, config_class, model_class = config_mapping[model_type]
+    except KeyError:
+        valid_options = ", ".join(config_mapping.keys())
+        raise ValueError(
+            f"Unsupported model type: {model_type}. Valid options are: {valid_options}"
+        )
+
+    config_path = config_dir / config_file
+    config = config_class(**json.loads(config_path.read_text(encoding="UTF-8")))
+    model = model_class(config)
+
     return PTBGame(levels, model)

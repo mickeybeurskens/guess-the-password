@@ -1,3 +1,4 @@
+import os
 import logging
 
 from flask import (Blueprint, Flask, jsonify, redirect, render_template,
@@ -114,8 +115,9 @@ class GameApp:
         return [level.hint() for level in self.game.levels]
 
 
-def create_app():
-    game = load_game()
+def create_app() -> Flask:
+    model_type = os.getenv("GTP_MODEL_TYPE", "ollama")
+    game = load_game(model_type=model_type)
     app = Flask(__name__)
     app.secret_key = "GuessThePasswordSecretSecret"
     game_app = GameApp(game)
